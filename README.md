@@ -9,9 +9,9 @@ AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and en
 ## Todo
 
 * [x] Core functionality
-* [] Chat history per user
-* [] Docker support
-* [] Support for all major ggml models 
+* [ ] Chat history per user
+* [ ] Docker support
+* [ ] Support for all major ggml models 
 
 ## Requirements
 
