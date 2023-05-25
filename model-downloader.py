@@ -19,11 +19,12 @@ while True:
     try:
         choice = int(input("Please select the model you want to download from the following list:\n" \
             "1. Vicuna 7B CENSORED\n"\
-            "2. Vicuna 7B UNCENSORED\n"\
+            "2. Vicuna 7B\n"\
             "3. Vicuna 13B CENSORED\n"\
-            "4. MPT 7B UNCENSORED\n\n"\
+            "4. MPT 7B\n"\
+            "5. GPT4All 13B CENSORED\n\n"\
             "Choice: "))
-        if 1 <= choice <= 4:
+        if 1 <= choice <= 5:
             break
         else: print("\nInvalid range, please try again.\n")
     except ValueError:
@@ -34,13 +35,15 @@ model_map = {
     1: "https://huggingface.co/TheBloke/wizardLM-7B-GGML/resolve/main/wizardLM-7B.ggmlv3.q4_1.bin",
     2: "https://huggingface.co/TheBloke/Wizard-Vicuna-7B-Uncensored-GGML/resolve/main/Wizard-Vicuna-7B-Uncensored.ggmlv3.q4_1.bin",
     3: "https://huggingface.co/TheBloke/wizard-vicuna-13B-GGML/resolve/main/wizard-vicuna-13B.ggmlv3.q4_1.bin",
-    4: "https://huggingface.co/TheBloke/MPT-7B-Instruct-GGML/resolve/main/mpt-7b-instruct.ggmlv3.q4_1.bin"
+    4: "https://huggingface.co/TheBloke/MPT-7B-Instruct-GGML/resolve/main/mpt-7b-instruct.ggmlv3.q4_1.bin",
+    5: "https://huggingface.co/TheBloke/GPT4All-13B-snoozy-GGML/resolve/main/GPT4All-13B-snoozy.ggmlv3.q4_1.bin"
 }
 destination_map = {
     1: "vicuna-7B-CENSORED",
-    2: "vicuna-7B-UNCENSORED",
+    2: "vicuna-7B",
     3: "vicuna-13B-CENSORED",
-    4: "MPT-7B-UNCENSORED"
+    4: "MPT-7B",
+    5: "GPT4All-13B-CENSORED"
 }
 url = model_map[choice]
 destination_path = "models/" + destination_map[choice] + ".bin"
