@@ -11,8 +11,12 @@ config.read('config.ini')
 updater = Updater(token=config.get("Bot", "token"), use_context=True)
 dispatcher = updater.dispatcher
 
+
 # AI model loading
-llm = AutoModelForCausalLM.from_pretrained("models/" + config.get("Ai", "model") + "-" + config.get("Ai", "model_size") + ".bin", model_type=config.get("Ai", "model_type"))
+if config.get("Ai", "censored") == "yes":
+    censor = "-CENSORED"
+else: censor = "-UNCENSORED"
+llm = AutoModelForCausalLM.from_pretrained("models/" + config.get("Ai", "model") + "-" + config.get("Ai", "model_size") + censor + ".bin", model_type=config.get("Ai", "model_type"))
 
 def ai(update, context):
     # Get message from user
