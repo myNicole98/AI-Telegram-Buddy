@@ -1,17 +1,33 @@
 <h3 align="center">
-<img src="assets/buddy.png" height="100" width="100"/></br>
-<b>AI Telegram Buddy</b></a>
+<img src="assets/buddy.png" height="120" width="120"/></br>
+<img src="assets/logo.png"/></br>
 </h3>
 
 ## About
-AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and entertain users on the Telegram platform.
+AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and entertain users on the Telegram platform. Official repository of t.me/vexassistantbot
 
 ## Todo
 
 * [x] Core functionality
+* [x] Dynamic message streaming
 * [ ] Chat history per user
 * [ ] Docker support
-* [ ] Support for all major ggml models 
+* [ ] Support for all major ggml models
+
+
+## Supported Models
+
+* [x] Vicuna
+* [x] MPT
+* [x] GPT4All
+* [ ] GPT4All-J
+* [ ] GPT-J
+* [ ] GPT-NeoX
+* [ ] StableLM
+* [ ] LLaMa
+* [ ] Alpaca
+* [ ] Dolly V2
+* [ ] StarCoder
 
 ## Requirements
 
