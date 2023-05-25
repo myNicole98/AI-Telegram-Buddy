@@ -17,6 +17,7 @@ AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and en
 
 - <a href=https://www.python.org/>Python</a> 3.11
 - A <a href=https://core.telegram.org/bots/tutorial#obtain-your-bot-token>telegram bot token</a>
+- AVX/AVX2 capable CPU
 
 ## Install
 
