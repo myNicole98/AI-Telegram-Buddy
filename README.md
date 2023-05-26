@@ -5,7 +5,11 @@
 </h3>
 
 ## About
-AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and entertain users on the Telegram platform. Official repository of t.me/vexassistantbot
+AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and entertain users on the Telegram platform. 
+
+The purpose of this project is to democratize AI and make it easily accessible to everyone and enable individuals, businesses, and organizations across all industries and domains to leverage the power of AI through a free and simple-to-use program.
+
+Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 
 ## Todo
 
@@ -19,14 +23,15 @@ AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and en
 
 ## Available Models
 
-Model | 7B | 13B | 30B | 65B
------------- | ------------- | ------------ | ------------ | ------------ |
-Vicuna | ✖️ | ✖️ 
-Vicuna Uncensored | ✖️
-MPT | ✖️
-GPT4All | | ✖️
+Model | 3B | 7B | 13B | 30B | 65B
+------------ | ------------- | ------------ | ------------ | ------------ | ------------ |
+Vicuna |  | ✖️ | ✖️ |
+Vicuna Uncensored |  | ✖️ |  |
+MPT |  | ✖️ | ✖️ |
+GPT4All |  |  | ✖️ |
+dolly-v2 | ✖️ | ✖️ |
 
-More models coming in the next updates.
+More models coming soon.
 
 ## Requirements
 
