@@ -22,9 +22,11 @@ while True:
             "2. Vicuna 7B UNCENSORED (Recommended)\n"\
             "3. Vicuna 13B\n"\
             "4. MPT 7B\n"\
-            "5. GPT4All 13B\n\n"\
+            "5. GPT4All 13B\n"\
+            "6. dolly-v2 3B\n"\
+            "7. dolly-v2 7B\n\n"\
             "Choice: "))
-        if 1 <= choice <= 5:
+        if 1 <= choice <= 7:
             break
         else: print("\nInvalid range, please try again.\n")
     except ValueError:
@@ -37,13 +39,17 @@ model_map = {
     3: "https://huggingface.co/TheBloke/wizard-vicuna-13B-GGML/resolve/main/wizard-vicuna-13B.ggmlv3.q4_1.bin",
     4: "https://huggingface.co/TheBloke/MPT-7B-Instruct-GGML/resolve/main/mpt-7b-instruct.ggmlv3.q4_1.bin",
     5: "https://huggingface.co/TheBloke/GPT4All-13B-snoozy-GGML/resolve/main/GPT4All-13B-snoozy.ggmlv3.q4_1.bin",
+    6: "https://huggingface.co/mverrilli/dolly-v2-3b-ggml/resolve/main/ggml-model-q5_0.bin",
+    7: "https://huggingface.co/mverrilli/dolly-v2-7b-ggml/resolve/main/ggml-model-q5_0.bin",
 }
 destination_map = {
-    1: "vicuna-7B",
-    2: "vicuna-7B-UNCENSORED",
-    3: "vicuna-13B",
+    1: "Vicuna-7B",
+    2: "Vicuna-7B-UNCENSORED",
+    3: "Vicuna-13B",
     4: "MPT-7B",
     5: "GPT4All-13B",
+    6: "dolly-v2 3B",
+    7: "dolly-v2 7B",
 }
 url = model_map[choice]
 destination_path = "models/" + destination_map[choice] + ".bin"
