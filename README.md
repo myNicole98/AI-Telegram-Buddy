@@ -11,30 +11,27 @@ AI Telegram Buddy is an AI-powered Python Telegram bot designed to assist and en
 
 * [x] Core functionality
 * [x] Dynamic message streaming
+* [ ] Analysis and summary of text documents
 * [ ] Chat history per user
 * [ ] Docker support
 * [ ] Support for all major ggml models
 
 
-## Supported Models
+## Available Models
 
-* [x] Vicuna
-* [x] MPT
-* [x] GPT4All
-* [ ] GPT4All-J
-* [ ] GPT-J
-* [ ] GPT-NeoX
-* [ ] StableLM
-* [ ] LLaMa
-* [ ] Alpaca
-* [ ] Dolly V2
-* [ ] StarCoder
+Model | 7B | 13B | 30B | 65B
+------------ | ------------- | ------------ | ------------ | ------------ |
+Vicuna | ✖️ | ✖️ 
+Vicuna Uncensored | ✖️
+MPT | ✖️
+GPT4All | | ✖️
+
+More models coming in the next updates.
 
 ## Requirements
 
 - <a href=https://www.python.org/>Python</a> 3.11
 - A <a href=https://core.telegram.org/bots/tutorial#obtain-your-bot-token>telegram bot token</a>
-- AVX/AVX2 capable CPU
 
 ## Install
 
