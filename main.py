@@ -18,7 +18,13 @@ dispatcher = updater.dispatcher
 if config.get("Ai", "uncensored") == "yes":
     censor = "-UNCENSORED"
 else: censor = ""
-llm = AutoModelForCausalLM.from_pretrained("models/" + config.get("Ai", "model") + "-" + config.get("Ai", "model_size") + censor + ".bin", model_type=config.get("Ai", "model_type"))
+
+model = config.get("Ai", "model")
+model_type = config.get("Ai", "model_type")
+model_size = config.get("Ai", "model_size")
+path = "models/" + model + "-" + model_size + censor + ".bin"
+
+llm = AutoModelForCausalLM.from_pretrained(path, model_type=model_type, lib=config.get("Ai", "instruction_set"))
 
 
 # AI command
