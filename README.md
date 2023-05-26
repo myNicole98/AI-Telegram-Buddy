@@ -1,6 +1,7 @@
 <h3 align="center">
 <img src="assets/buddy.png" height="120" width="120"/></br>
 <img src="assets/logo.png"/></br>
+<img src="assets/preview.webp"><br>
 </h3>
 
 ## About
