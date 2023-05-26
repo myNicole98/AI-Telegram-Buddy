@@ -15,8 +15,8 @@ dispatcher = updater.dispatcher
 
 
 # AI model loading
-if config.get("Ai", "censored") == "yes":
-    censor = "-CENSORED"
+if config.get("Ai", "uncensored") == "yes":
+    censor = "-UNCENSORED"
 else: censor = ""
 llm = AutoModelForCausalLM.from_pretrained("models/" + config.get("Ai", "model") + "-" + config.get("Ai", "model_size") + censor + ".bin", model_type=config.get("Ai", "model_type"))
 
@@ -44,7 +44,7 @@ def ai(update, context):
                                             text=response)
             except BadRequest: pass
             except KeyError: pass
-            time.sleep(1)
+            time.sleep(int(config.get("Chat", "edit_delay")))
 
     # Start the defragmenter and ignore the initial KeyError exception
     thread = threading.Thread(target=fragmenter)
@@ -61,12 +61,15 @@ def ai(update, context):
                   reply_to_message_id=update.message.message_id)
             context.user_data['bot_last_message_id'] = msg.message_id
             sent_message = True
+            time.sleep(int(config.get("Chat", "edit_delay")))
     prompt_is_done = True
 
     # Edit the message one last time with the final response
-    context.bot.editMessageText(chat_id=update.message.chat_id,
-                                            message_id=context.user_data['bot_last_message_id'],
-                                            text=response)
+    try:
+        context.bot.editMessageText(chat_id=update.message.chat_id,
+                                                message_id=context.user_data['bot_last_message_id'],
+                                                text=response)
+    except BadRequest: pass
     # End the threading
     thread.join()
 
