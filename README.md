@@ -30,6 +30,7 @@ Vicuna Uncensored |  | ✖️ |  |
 MPT |  | ✖️ | ✖️ |
 GPT4All |  |  | ✖️ |
 dolly-v2 | ✖️ | ✖️ |
+LLaMa |  | ✖️ | ✖️ |
 
 More models coming soon.
 
