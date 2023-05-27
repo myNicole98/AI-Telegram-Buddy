@@ -27,7 +27,7 @@ while True:
             "7. dolly-v2 7B\n"\
             "8. LLaMa 7B\n"\
             "9. LLaMa 7B UNCENSORED\n"\
-            "10. LLaMA 13B UNCENSORED\n\n"\
+            "10. LLaMA 13B UNCENSORED (Recommended)\n\n"\
             "Choice: "))
         if 1 <= choice <= 10:
             break
