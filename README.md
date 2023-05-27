@@ -17,6 +17,7 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 * [x] Dynamic message streaming
 * [ ] Analysis and summary of text documents
 * [ ] Chat history per user
+* [x] Parallel inference
 * [ ] Docker support
 * [ ] Support for all major ggml models
 
