@@ -81,10 +81,8 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 # Get new delay in seconds
                 with active_processes_lock:
                     num_active_processes = active_processes_count.value
-                    print(num_active_processes)
 
                 time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
-                print(int(config.get("Chat", "edit_delay")) * num_active_processes)
 
         def is_typing():
             # Set bot as typing
