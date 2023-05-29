@@ -1,5 +1,5 @@
 from ctransformers import AutoModelForCausalLM
-from telegram.error import BadRequest, RetryAfter
+from telegram.error import BadRequest, RetryAfter, TimedOut
 from telegram.ext import *
 import multiprocessing
 import configparser
@@ -126,12 +126,17 @@ def inference(update, context, active_processes_count, active_processes_lock):
                     active_processes_count.value -= 1
                 break
             except BadRequest:
-                pass
                 with active_processes_lock:
                     active_processes_count.value -= 1
+                pass
             except RetryAfter:
                         print("Flood control triggered. Retrying in 10 seconds...")
                         time.sleep(10)
+            except TimedOut:
+                with active_processes_lock:
+                    active_processes_count.value -= 1
+                pass
+                
 
 # Bot handlers
 ai_handler = CommandHandler('ai', ai)
