@@ -78,14 +78,14 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 except RetryAfter:
                     print("Flood control triggered. Retrying in 10 seconds...")
                     time.sleep(10)
+                except TimedOut:
+                    time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
+                    pass
                 # Get new delay in seconds
                 with active_processes_lock:
                     num_active_processes = active_processes_count.value
 
                 time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
-            
-            with active_processes_lock:
-                    active_processes_count.value -= 1
 
         def is_typing():
             # Set bot as typing
@@ -122,20 +122,17 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 context.bot.editMessageText(chat_id=update.message.chat_id,
                                             message_id=context.user_data['bot_last_message_id'],
                                             text=response)
-                with active_processes_lock:
-                    active_processes_count.value -= 1
                 break
             except BadRequest:
-                with active_processes_lock:
-                    active_processes_count.value -= 1
                 pass
             except RetryAfter:
                         print("Flood control triggered. Retrying in 10 seconds...")
                         time.sleep(10)
             except TimedOut:
+                pass
+            finally:
                 with active_processes_lock:
                     active_processes_count.value -= 1
-                pass
                 
 
 # Bot handlers
