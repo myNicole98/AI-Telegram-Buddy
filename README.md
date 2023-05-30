@@ -16,7 +16,7 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 * [x] Core functionality
 * [x] Dynamic message streaming
 * [ ] Analysis and summary of text documents
-* [ ] Chat history per user
+* [x] Chat history per user
 * [x] Parallel inference
 * [ ] Docker support
 * [ ] Support for all major ggml models
@@ -27,11 +27,10 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 Model | 3B | 7B | 13B | 30B | 65B
 ------------ | ------------- | ------------ | ------------ | ------------ | ------------ |
 Vicuna |  | ✖️ | ✖️ |
-Vicuna Uncensored |  | ✖️ |  |
 MPT |  | ✖️ | ✖️ |
 GPT4All |  |  | ✖️ |
 dolly-v2 | ✖️ | ✖️ |
-LLaMa |  | ✖️ | ✖️ |
+LLaMa |  | ✖️ | ✖️ | ✖️ |
 
 More models coming soon.
 
