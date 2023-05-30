@@ -1,10 +1,11 @@
-from ctransformers import AutoModelForCausalLM
 from telegram.error import BadRequest, RetryAfter, TimedOut
+from ctransformers import AutoModelForCausalLM
 from telegram.ext import *
 import multiprocessing
 import configparser
 import threading
 import telegram
+import sqlite3
 import time
 
 # Config initialization
@@ -29,13 +30,21 @@ path = "models/" + model + "-" + model_size + censor + ".bin"
 llm = AutoModelForCausalLM.from_pretrained(path, model_type=model_type, lib=config.get("Ai", "instruction_set"))
 
 # Limit the number of parallel processes
-max_parallel_processes = int(config.get("Chat", "max_parallel_chats"))
+if config.get("Chat", "history") == "yes":
+    max_parallel_processes = 1
+else: max_parallel_processes = int(config.get("Chat", "max_parallel_chats"))
 process_semaphore = multiprocessing.Semaphore(max_parallel_processes)
 
 # Define process manager
 manager = multiprocessing.Manager()
 active_processes_count = manager.Value('i', 0)
 active_processes_lock = manager.Lock()
+
+# Database initialization
+history_db = sqlite3.connect("history.db")
+history = history_db.cursor()
+history.execute("CREATE TABLE IF NOT EXISTS History (user_id INT, user_history TEXT, history_size INT)")
+history_db.close()
 
 def ai(update, context):
     # Increase the value of the processes count
@@ -55,10 +64,29 @@ def inference(update, context, active_processes_count, active_processes_lock):
             num_active_processes = active_processes_count.value
         # Get message from user
         mex = update.message.text
-        mex = mex.replace("/ai", "")
+        mex = mex.replace("/ai ", "")
         response = ""
+        
+        if config.get("Chat", "history") == "yes":
+            # Initialize database
+            history_db = sqlite3.connect("history.db")
+            history = history_db.cursor()
+
+            # Get user ID
+            user_id = update.message.from_user.id
+            history.execute("INSERT OR IGNORE INTO History (user_id) VALUES (?)", (user_id,))
+            history_db.commit()
+
+            # Get user history
+            history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
+            fetch = history.fetchone()[0]
+            try:
+                mex = fetch + "\n\n### Instruction:\n\n" + mex
+            except TypeError:
+                mex = "### Instruction:\n\n" + mex
         # Define the tokens
-        tokens = llm.tokenize(str(config.get("Ai", "prompt") + '\n\n### Instruction:\n\n' + mex + '\n\n ###Response:\n\n'))
+        tokens = llm.tokenize(str(config.get("Ai", "prompt") + '\n\n### Instruction:\n\n' + mex + '\n\n### Response:\n\n'))
+        
 
         # Initialize variables
         sent_message = False
@@ -108,14 +136,15 @@ def inference(update, context, active_processes_count, active_processes_lock):
 
             # Send initial message
             if not sent_message:
-                msg = context.bot.send_message(chat_id=update.effective_chat.id, text=response,
-                                            reply_to_message_id=update.message.message_id)
-                context.user_data['bot_last_message_id'] = msg.message_id
-                sent_message = True
-                context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
-                time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
-        prompt_is_done = True
-
+                try:
+                    msg = context.bot.send_message(chat_id=update.effective_chat.id, text=response,
+                                                reply_to_message_id=update.message.message_id)
+                    context.user_data['bot_last_message_id'] = msg.message_id
+                    sent_message = True
+                    context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
+                    time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
+                except BadRequest: pass
+        
         # Edit the message one last time with the final response
         while True:
             try:
@@ -131,15 +160,48 @@ def inference(update, context, active_processes_count, active_processes_lock):
             except TimedOut:
                 pass
             finally:
+                prompt_is_done = True
+                
+                # Decrease the process count
                 with active_processes_lock:
                     active_processes_count.value -= 1
                 
+                # Add conversation to history
+                if config.get("Chat", "history") == "yes":
+                    # Merge conversation
+                    merged_mex = mex + "\n\n### Response:\n\n" + response
+                    history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
+                    current_user_history = history.fetchone()[0]
+                    try:
+                        current_user_history = current_user_history + "\n\n" + merged_mex
+                    except TypeError:
+                        current_user_history =  merged_mex
+                    
+                    # Append conversation to database
+                    history.execute("UPDATE History SET user_history = ? WHERE user_id = ?", (current_user_history, user_id))
+                    history_db.commit()
+                    history_db.close()
+
+def clear(update, context):
+    # Get user ID
+    user_id = update.message.from_user.id
+
+    # Delete history
+    history_db = sqlite3.connect("history.db")
+    history = history_db.cursor()
+    history.execute("UPDATE History SET user_history = NULL, history_size = NULL WHERE user_id = ?", (user_id,))
+    history_db.commit()
+    msg = context.bot.send_message(chat_id=update.effective_chat.id, text="History cleared",
+                                    reply_to_message_id=update.message.message_id)
+    history_db.close()
 
 # Bot handlers
 ai_handler = CommandHandler('ai', ai)
+purge_handler = CommandHandler('clear', clear)
 
 # Bot dispatchers
 dispatcher.add_handler(ai_handler)
+dispatcher.add_handler(purge_handler)
 
 # Bot polling
 updater.start_polling()
