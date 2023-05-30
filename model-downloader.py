@@ -27,7 +27,8 @@ while True:
             "7. dolly-v2 7B\n"\
             "8. LLaMa 7B\n"\
             "9. LLaMa 7B UNCENSORED\n"\
-            "10. LLaMA 13B UNCENSORED (Recommended)\n\n"\
+            "10. LLaMA 13B UNCENSORED (Recommended)\n"\
+            "11. LLaMa 30B supercot\n\n"\
             "Choice: "))
         if 1 <= choice <= 10:
             break
@@ -46,7 +47,8 @@ model_map = {
     7: "https://huggingface.co/mverrilli/dolly-v2-7b-ggml/resolve/main/ggml-model-q5_0.bin",
     8: "https://huggingface.co/Jahaz/multi-lora-llama-7b-ggml-q5-1/resolve/main/7B-ggml-WizardLM-unsensored-model-q5_1.bin",
     9: "https://huggingface.co/Jahaz/multi-lora-llama-7b-ggml-q5-1/resolve/main/7B-ggml-model-wizard-finnish-itlaian-germany-esjokeq5_1.bin",
-    10: "https://huggingface.co/Jahaz/multi-lora-llama-7b-ggml-q5-1/resolve/main/13B-ggml-model-WizardVicunaUnsensored-StarCoderq5_1.bin"
+    10: "https://huggingface.co/Jahaz/multi-lora-llama-7b-ggml-q5-1/resolve/main/13B-ggml-model-WizardVicunaUnsensored-StarCoderq5_1.bin",
+    11: "https://huggingface.co/TheBloke/llama-30b-supercot-GGML/resolve/main/llama-30b-supercot.ggmlv3.q4_1.bin"
 }
 destination_map = {
     1: "Vicuna-7B",
@@ -58,7 +60,8 @@ destination_map = {
     7: "dolly-v2-7B",
     8: "LLaMa-7B",
     9: "LLaMa-7B-UNCENSORED",
-    10: "LLaMa-13B-UNCENSORED"
+    10: "LLaMa-13B-UNCENSORED",
+    11: "LLaMa-30B"
 }
 url = model_map[choice]
 destination_path = "models/" + destination_map[choice] + ".bin"
