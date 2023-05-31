@@ -73,7 +73,7 @@ python model-downloader.py
 python main.py
 ```
 
-4. <b>Interact with your bot</b>: Open the Telegram app, search for your bot's username, and start interacting with it by sendind the `/ai` command followed by a message (e.g. `/ai hello there, nice to meet you`)
+4. <b>Interact with your bot</b>: Open the Telegram app, search for your bot's username, and start interacting with it by sendind the `/ai` command followed by a message (e.g. `/ai hello there, nice to meet you`). If <b>history</b> is enabled, use `/clear` to clear your user history
 
 ## Contributing
 
