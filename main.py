@@ -75,7 +75,6 @@ def inference(update, context, active_processes_count, active_processes_lock):
             # Get user ID
             user_id = update.message.from_user.id
             history.execute("INSERT OR IGNORE INTO History (user_id) VALUES (?)", (user_id,))
-            history_db.commit()
 
             # Get user history
             history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
@@ -84,6 +83,13 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 mex = fetch + "\n\n### Instruction:\n\n" + mex
             except TypeError:
                 mex = "### Instruction:\n\n" + mex
+            while True:
+                try:
+                    history_db.commit()
+                    history_db.close()
+                    break
+                except sqlite3.OperationalError:
+                    pass
         # Define the tokens
         tokens = llm.tokenize(str(config.get("Ai", "prompt") + '\n\n### Instruction:\n\n' + mex + '\n\n### Response:\n\n'))
         
@@ -125,8 +131,8 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 time.sleep(4)
 
         # Start the defragmenter and ignore the initial KeyError exception
-        defragmenter_thread = threading.Thread(target=fragmenter)
-        defragmenter_thread.start()
+        fragmenter_thread = threading.Thread(target=fragmenter)
+        fragmenter_thread.start()
 
         # Start the typing state
         is_typing_thread = threading.Thread(target=is_typing)
@@ -173,6 +179,9 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 
                 # Add conversation to history
                 if config.get("Chat", "history") == "yes":
+                    # Connect to database
+                    history_db = sqlite3.connect("history.db")
+                    history = history_db.cursor()
                     # Merge conversation
                     merged_mex = mex + "\n\n### Response:\n\n" + response
                     history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
@@ -180,12 +189,16 @@ def inference(update, context, active_processes_count, active_processes_lock):
                     try:
                         current_user_history = current_user_history + "\n\n" + merged_mex
                     except TypeError:
-                        current_user_history =  merged_mex
+                        current_user_history = merged_mex
                     
                     # Append conversation to database
                     history.execute("UPDATE History SET user_history = ? WHERE user_id = ?", (current_user_history, user_id))
-                    history_db.commit()
-                    history_db.close()
+                    while True:
+                        try:
+                            history_db.commit()
+                            history_db.close()
+                            break
+                        except sqlite3.OperationalError: pass
 
 def clear(update, context):
     # Get user ID
