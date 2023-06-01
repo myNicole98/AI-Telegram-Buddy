@@ -201,18 +201,21 @@ def inference(update, context, active_processes_count, active_processes_lock):
                         except sqlite3.OperationalError: pass
 
 def clear(update, context):
-    # Get user ID
-    user_id = update.message.from_user.id
+    if config.get("Chat", "history") == "yes":
+        # Get user ID
+        user_id = update.message.from_user.id
 
-    # Delete history
-    history_db = sqlite3.connect("history.db")
-    history = history_db.cursor()
-    history.execute("UPDATE History SET user_history = NULL, history_size = NULL WHERE user_id = ?", (user_id,))
-    history_db.commit()
-    msg = context.bot.send_message(chat_id=update.effective_chat.id, text="History cleared",
-                                    reply_to_message_id=update.message.message_id)
-    history_db.close()
-
+        # Delete history
+        history_db = sqlite3.connect("history.db")
+        history = history_db.cursor()
+        history.execute("UPDATE History SET user_history = NULL, history_size = NULL WHERE user_id = ?", (user_id,))
+        history_db.commit()
+        msg = context.bot.send_message(chat_id=update.effective_chat.id, text="History cleared",
+                                        reply_to_message_id=update.message.message_id)
+        history_db.close()
+    else:
+        msg = context.bot.send_message(chat_id=update.effective_chat.id, text="Chat history is not enabled. Nothing to clear",
+                                        reply_to_message_id=update.message.message_id)
 # Bot handlers
 ai_handler = CommandHandler('ai', ai)
 clear_handler = CommandHandler('clear', clear)
