@@ -202,11 +202,11 @@ def clear(update, context):
 
 # Bot handlers
 ai_handler = CommandHandler('ai', ai)
-purge_handler = CommandHandler('clear', clear)
+clear_handler = CommandHandler('clear', clear)
 
 # Bot dispatchers
 dispatcher.add_handler(ai_handler)
-dispatcher.add_handler(purge_handler)
+dispatcher.add_handler(clear_handler)
 
 # Bot polling
 updater.start_polling()
