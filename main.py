@@ -1,4 +1,4 @@
-from telegram.error import BadRequest, RetryAfter, TimedOut
+from telegram.error import BadRequest, RetryAfter, TimedOut, NetworkError
 from ctransformers import AutoModelForCausalLM
 from telegram.ext import *
 import multiprocessing
@@ -109,6 +109,9 @@ def inference(update, context, active_processes_count, active_processes_lock):
                 except TimedOut:
                     time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
                     pass
+                except NetworkError:
+                    time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
+                    pass
                 # Get new delay in seconds
                 with active_processes_lock:
                     num_active_processes = active_processes_count.value
@@ -158,6 +161,8 @@ def inference(update, context, active_processes_count, active_processes_lock):
                         print("Flood control triggered. Retrying in 10 seconds...")
                         time.sleep(10)
             except TimedOut:
+                pass
+            except NetworkError:
                 pass
             finally:
                 prompt_is_done = True
