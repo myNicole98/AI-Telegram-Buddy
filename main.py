@@ -80,9 +80,9 @@ def inference(update, context, active_processes_count, active_processes_lock):
             history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
             fetch = history.fetchone()[0]
             try:
-                mex = fetch + "\n\n### Instruction:\n\n" + mex
+                mex = fetch + "USER: " + mex + "\n" + "ASSISTANT: "
             except TypeError:
-                mex = "### Instruction:\n\n" + mex
+                mex = config.get("Ai", "prompt") + "\nUSER: " + mex + "\n" + "ASSISTANT: "
             while True:
                 try:
                     history_db.commit()
@@ -127,8 +127,13 @@ def inference(update, context, active_processes_count, active_processes_lock):
         def is_typing():
             # Set bot as typing
             while not prompt_is_done:
-                context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
-                time.sleep(4)
+                while True:
+                    try:
+                        context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
+                        time.sleep(4)
+                        break
+                    except NetworkError:
+                        time.sleep(1)
 
         # Start the defragmenter and ignore the initial KeyError exception
         fragmenter_thread = threading.Thread(target=fragmenter)
@@ -150,7 +155,12 @@ def inference(update, context, active_processes_count, active_processes_lock):
                                                 reply_to_message_id=update.message.message_id)
                     context.user_data['bot_last_message_id'] = msg.message_id
                     sent_message = True
-                    context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
+                    while True:
+                        try:
+                            context.bot.sendChatAction(chat_id=update.message.chat_id, action = telegram.ChatAction.TYPING)
+                            break
+                        except NetworkError:
+                            time.sleep(1)
                     time.sleep(int(config.get("Chat", "edit_delay")) * num_active_processes)
                 except BadRequest: pass
         
@@ -183,7 +193,7 @@ def inference(update, context, active_processes_count, active_processes_lock):
                     history_db = sqlite3.connect("history.db")
                     history = history_db.cursor()
                     # Merge conversation
-                    merged_mex = mex + "\n\n### Response:\n\n" + response
+                    merged_mex = mex + response + "\n"
                     history.execute("SELECT user_history FROM History WHERE user_id = ?", (user_id,))
                     current_user_history = history.fetchone()[0]
                     try:
