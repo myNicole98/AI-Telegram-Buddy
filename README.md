@@ -21,7 +21,7 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 * [x] Parallel inference
 * [ ] GPU inference
 * [ ] Docker support
-* [ ] Support for all major ggml models
+* [x] Support for major ggml models
 
 
 ## Available Models
@@ -33,6 +33,7 @@ MPT |  | ✖️ | ✖️ |
 GPT4All |  |  | ✖️ |
 dolly-v2 | ✖️ | ✖️ |
 LLaMa |  | ✖️ | ✖️ | ✖️ |
+Dromedary |  |  |  |  | ✖️ |
 
 More models coming soon.
 
