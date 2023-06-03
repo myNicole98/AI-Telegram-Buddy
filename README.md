@@ -19,6 +19,7 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 * [x] Chat history per user
 * [ ] Concurrent chat history with PostegreSQL support
 * [x] Parallel inference
+* [ ] GPU inference
 * [ ] Docker support
 * [ ] Support for all major ggml models
 
@@ -27,7 +28,7 @@ Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 
 Model | 3B | 7B | 13B | 30B | 65B
 ------------ | ------------- | ------------ | ------------ | ------------ | ------------ |
-Vicuna |  | ✖️ | ✖️ |
+Vicuna |  | ✖️ | ✖️ | ✖️ |
 MPT |  | ✖️ | ✖️ |
 GPT4All |  |  | ✖️ |
 dolly-v2 | ✖️ | ✖️ |
