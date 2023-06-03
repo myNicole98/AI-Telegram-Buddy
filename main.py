@@ -27,7 +27,7 @@ model_type = config.get("Ai", "model_type")
 model_size = config.get("Ai", "model_size")
 path = "models/" + model + "-" + model_size + censor + ".bin"
 
-llm = AutoModelForCausalLM.from_pretrained(path, model_type=model_type, lib=config.get("Ai", "instruction_set"))
+llm = AutoModelForCausalLM.from_pretrained(path, model_type=model_type, lib=config.get("Ai", "instruction_set"), last_n_tokens=256)
 
 # Limit the number of parallel processes
 if config.get("Chat", "history") == "yes":
