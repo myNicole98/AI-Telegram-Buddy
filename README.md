@@ -2,6 +2,7 @@
 <img src="assets/buddy.png" height="120" width="120"/></br>
 <img src="assets/logo.png"/></br>
 <img src="assets/preview.webp"><br>
+<img src="assets/summarize.webp"><br>
 </h3>
 
 ## About
@@ -11,17 +12,24 @@ The purpose of this project is to democratize AI and make it easily accessible t
 
 Official repository of <a href="https://t.me/vexassistantbot">Vexa</a>
 
-## Todo
+## T0 features
 
 * [x] Core functionality
+* [ ] User friendly GUI
 * [x] Dynamic message streaming
-* [ ] Analysis and summary of text documents
+* [x] Summary of text documents
 * [x] Chat history per user
-* [ ] Concurrent chat history with PostegreSQL support
 * [x] Parallel inference
 * [ ] GPU inference
 * [ ] Docker support
 * [x] Support for major ggml models
+
+## T1 features
+
+* [ ] Concurrent chat history with PostegreSQL support
+* [ ] Full migration to langchain
+* [ ] Summary feature extended to more file formats
+* [ ] Optimization of very long prompts and history
 
 
 ## Available Models
