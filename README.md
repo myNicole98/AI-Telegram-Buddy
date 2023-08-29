@@ -58,7 +58,7 @@ More models coming soon.
 1. <b>Clone this repository</b>:
 
 ```bash 
-git clone https://gitea.nikko.cf/nikko/AI-Telegram-Buddy
+git clone https://gitea.nikko.eu.org/nikko/AI-Telegram-Buddy
 cd AI-Telegram-Buddy
 ```
 
